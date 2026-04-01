@@ -41,10 +41,11 @@ jobs:
           fetch-depth: 0 # Fetch all history for all branches and tags
 
       - name: Build and lint project
+        # This package does not define a `lake lint` driver, so keep the
+        # blueprint workflow to the checks that are actually configured here.
         uses: leanprover/lean-action@434f25c2f80ded67bba02502ad3a86f25db50709 # 2025-07-02
         with:
           build: true
-          lint: true
           mk_all-check: true
 
       - name: Compile blueprint and documentation
