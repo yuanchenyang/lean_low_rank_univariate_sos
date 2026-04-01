@@ -1,7 +1,7 @@
 # LowRankUnivariateSOS
 
-[![Lean Action CI](https://github.com/yuanchenyang/low_rank_univariate_sos/actions/workflows/lean_action_ci.yml/badge.svg)](https://github.com/yuanchenyang/low_rank_univariate_sos/actions/workflows/lean_action_ci.yml)
-[![Create Release](https://github.com/yuanchenyang/low_rank_univariate_sos/actions/workflows/create-release.yml/badge.svg)](https://github.com/yuanchenyang/low_rank_univariate_sos/actions/workflows/create-release.yml)
+[![Lean Action CI](https://github.com/yuanchenyang/lean_low_rank_univariate_sos/actions/workflows/lean_action_ci.yml/badge.svg)](https://github.com/yuanchenyang/lean_low_rank_univariate_sos/actions/workflows/lean_action_ci.yml)
+[![Create Release](https://github.com/yuanchenyang/lean_low_rank_univariate_sos/actions/workflows/create-release.yml/badge.svg)](https://github.com/yuanchenyang/lean_low_rank_univariate_sos/actions/workflows/create-release.yml)
 
 This directory contains a complete Lean 4 formalization of the rank-2 univariate
 sum-of-squares landscape result from Benoît Legat, Chenyang Yuan, and Pablo A.
