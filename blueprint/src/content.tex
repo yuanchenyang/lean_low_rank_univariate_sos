@@ -1,7 +1,458 @@
-% In this file you should put the actual content of the blueprint.
-% It will be used both by the web and the print version.
-% It should *not* include the \begin{document}
-%
-% If you want to split the blueprint content into several files then
-% the current file can be a simple sequence of \input. Otherwise It
-% can start with a \section or \chapter for instance.
+\chapter{Proof Outline}
+
+This blueprint documents the Lean package \texttt{LowRankUnivariateSOS}. It is
+intended to be self-contained at the level of the formal proof strategy: the
+optimization model, the algebraic reductions, the hgroup step, and the
+factor-peeling transport are all stated here in the same order in which the
+formal proof uses them.
+
+The endpoint is the theorem \texttt{rankTwo\_no\_spurious\_socp} in
+\texttt{RankTwoMain.lean}. The Lean statement is slightly stronger than the one
+in the paper: it is proved for an arbitrary positive-definite bilinear form on
+the polynomial space, not just for one fixed inner product.
+
+This is the final formal claim.
+\begin{theorem}\label{thm:main}
+\uses{prop:abstract-socp,prop:setup}
+\lean{LowRankUnivariateSOS.rankTwo_no_spurious_socp}
+\leanok
+For every sum-of-squares polynomial $p$ and every second-order critical point
+$u=(u_1,u_2)$ of the quadratic-penalty objective,
+\[
+\sigma(u)-p = 0.
+\]
+Equivalently,
+\[
+\sigma(u)=p,
+\]
+so every SOCP is globally optimal.
+\end{theorem}
+
+\section{Optimization Model}
+
+This definition fixes the objective and the exact FOCP/SOCP equations.
+\begin{definition}\label{def:model}
+\lean{LowRankUnivariateSOS.sigma2, LowRankUnivariateSOS.A, LowRankUnivariateSOS.residual, LowRankUnivariateSOS.objective, LowRankUnivariateSOS.IsSOS, LowRankUnivariateSOS.IsFOCP, LowRankUnivariateSOS.hessianTerm, LowRankUnivariateSOS.IsSOCP}
+\leanok
+The formal model is defined in \texttt{PolynomialModel.lean} and
+\texttt{Socp.lean}. For a pair of polynomials $u=(u_1,u_2)$,
+\[
+\sigma(u)=u_1^2+u_2^2,\qquad
+A_u(v)=u_1v_1+u_2v_2,\qquad
+\operatorname{residual}(p,u)=\sigma(u)-p.
+\]
+The objective is
+\[
+f_p(u)=\langle \sigma(u)-p,\sigma(u)-p\rangle.
+\]
+The FOCP condition is
+\[
+\forall v,\qquad \langle A_u(v),\sigma(u)-p\rangle = 0.
+\]
+In Lean this is \texttt{IsFOCP}. The Hessian quadratic form is
+\[
+\operatorname{hessianTerm}(p,u,v)=
+\langle \sigma(v),\sigma(u)-p\rangle + 2\|A_u(v)\|^2.
+\]
+The SOCP condition is the FOCP condition together with
+\[
+\forall v,\qquad 0 \le \operatorname{hessianTerm}(p,u,v).
+\]
+In the kernel directions used later in the proof,
+\[
+A_u(v)=0
+\quad\Longrightarrow\quad
+0 \le \langle \sigma(v),\sigma(u)-p\rangle.
+\]
+In Lean this full condition is \texttt{IsSOCP}.
+\end{definition}
+
+This is the abstract inequality package used at the end of the proof.
+\begin{proposition}\label{prop:abstract-socp}
+\uses{def:model}
+\lean{LowRankUnivariateSOS.IsSOCP, LowRankUnivariateSOS.ImageOrthogonalResidual, LowRankUnivariateSOS.factored_h1_residual_eq_zero}
+\leanok
+Write
+\[
+r=\sigma(u)-p.
+\]
+Then the SOCP conditions give
+\[
+\forall q \in \operatorname{im}(A_{u_{\mathrm{img}}}),\qquad \langle q,r\rangle = 0
+\]
+for the transformed image used later in the proof, and
+\[
+\forall w \in \ker(A_u),\qquad 0 \le \langle \sigma(w),r\rangle.
+\]
+So if one can prove
+\[
+p = q_{\mathrm{img}} + \sum_i \sigma(w_i),
+\qquad
+q_{\mathrm{img}} \in \operatorname{im}(A_{u_{\mathrm{img}}}),
+\qquad
+w_i \in \ker(A_u),
+\]
+then
+\[
+0 \le \langle p,r\rangle
+= \langle q_{\mathrm{img}},r\rangle + \sum_i \langle \sigma(w_i),r\rangle.
+\]
+Evaluating the FOCP condition at $v=u$ gives
+\[
+\langle \sigma(u),r\rangle = 0,
+\]
+hence
+\[
+f_p(u)=\langle r,r\rangle
+= \langle \sigma(u)-p,r\rangle
+= -\langle p,r\rangle \le 0.
+\]
+Since always $f_p(u)\ge 0$, it follows that
+\[
+f_p(u)=0,\qquad r=0.
+\]
+This is exactly the abstract content of
+\texttt{factored\_h1\_residual\_eq\_zero}.
+\end{proposition}
+
+\section{Reduced Factorization}
+
+This is the first algebraic reduction.
+\begin{proposition}\label{prop:reduced-factorization}
+\lean{LowRankUnivariateSOS.ReducedFactorization, LowRankUnivariateSOS.gcd_sigma_decomposition, LowRankUnivariateSOS.no_real_roots_sigma_reduced}
+\leanok
+Lean constructs a decomposition
+\[
+u = a \cdot u_0,
+\qquad
+\gcd(u_{0,1},u_{0,2})=1.
+\]
+In Lean this is the structure \texttt{ReducedFactorization} produced by
+\texttt{gcd\_sigma\_decomposition}. The companion theorem
+\texttt{no\_real\_roots\_sigma\_reduced} proves
+\[
+\forall x \in \mathbb R,\qquad \sigma(u_0)(x)\neq 0.
+\]
+So the common factor of $u_1,u_2$ is isolated in $a$, while the reduced pair
+$u_0$ is coprime and its sum of squares has no real roots.
+\end{proposition}
+
+This separates the common factor into the good part and the peelable part.
+\begin{proposition}\label{prop:factor-split}
+\uses{prop:reduced-factorization}
+\lean{LowRankUnivariateSOS.factor_peeling_decomposition}
+\leanok
+Assume $a\neq 0$. Then Lean produces a factorization
+\[
+a = g_{\mathrm{base}} \prod_i r_i
+\]
+such that
+\[
+\forall i,\qquad r_i \mid \sigma(u_0),
+\qquad
+\gcd(g_{\mathrm{base}},\sigma(u_0))=1.
+\]
+The peeled terminal factor is
+\[
+g=\operatorname{peelTerminalScale}(g_{\mathrm{base}},[r_1,\dots,r_n]),
+\]
+and satisfies
+\[
+\gcd(g,\sigma(u_0))=1.
+\]
+Informally, each bad factor $r_i$ is replaced by one copy of $X^2$, while the
+coprime part $g_{\mathrm{base}}$ is kept unchanged.
+\end{proposition}
+
+\section{The hgroup Step and the \texorpdfstring{$h=1$}{h=1} Case}
+
+This definition records the explicit image and kernel generators used in the
+$h=1$ argument.
+\begin{definition}\label{def:h1-machinery}
+\lean{LowRankUnivariateSOS.scalePair, LowRankUnivariateSOS.perpPair, LowRankUnivariateSOS.inKerA_perpPair_scalePair, LowRankUnivariateSOS.inSigmaKerCone_sos_mul_sigma2, LowRankUnivariateSOS.inImageA_mul_of_isCoprime}
+\leanok
+The basic constructions are
+\[
+\operatorname{scalePair}(g,u)=(g u_1,g u_2),
+\qquad
+\operatorname{perpPair}(t,u)=(-t u_2,t u_1).
+\]
+They satisfy
+\[
+A_{g u}(\operatorname{perpPair}(t,u))=0,
+\qquad
+\sigma(\operatorname{perpPair}(t,u))=t^2 \sigma(u).
+\]
+Hence if
+\[
+s=q_1^2+q_2^2,
+\]
+then
+\[
+s\,\sigma(u)=\sigma(\operatorname{perpPair}(q_1,u))
+            +\sigma(\operatorname{perpPair}(q_2,u)),
+\]
+so $s\,\sigma(u)$ lies in the cone generated by kernel squares. On the image
+side, coprimality gives Bézout surjectivity:
+\[
+\gcd(u_1,u_2)=1
+\quad\Longrightarrow\quad
+\forall q\ \exists v,\ A_u(v)=q.
+\]
+Therefore
+\[
+\forall q\ \exists v,\ A_{g u}(v)=gq.
+\]
+\end{definition}
+
+This is the algebraic division step behind the paper's hgroup argument.
+\begin{lemma}\label{lem:hgroup}
+\lean{LowRankUnivariateSOS.isSOS_mul, LowRankUnivariateSOS.hgroup_affine}
+\leanok
+If $p$ and $q$ are SOS polynomials and $\gcd(g,q)=1$, then there exist $s,t$
+such that
+\[
+p = g\,t + s\,q,
+\qquad
+s \text{ is SOS}.
+\]
+Lean proves this by choosing Bézout coefficients
+\[
+ag+bq=1
+\]
+and defining
+\[
+s=b^2 p q,
+\qquad
+t=p(2a-a^2 g).
+\]
+Then
+\[
+g\,t+s\,q
+=p\bigl(g(2a-a^2g)+b^2 q^2\bigr)
+=p\bigl(ag(2-ag)+(bq)^2\bigr)
+=p,
+\]
+using $bq=1-ag$. The SOS claim for $s$ is exactly
+\[
+b^2 \text{ is SOS},\quad p \text{ is SOS},\quad q \text{ is SOS}
+\quad\Longrightarrow\quad
+b^2 p q \text{ is SOS},
+\]
+formalized by \texttt{isSOS\_mul}.
+\end{lemma}
+
+This converts the hgroup identity into the paper's image-plus-cone condition.
+\begin{proposition}\label{prop:h1}
+\uses{def:h1-machinery,lem:hgroup}
+\lean{LowRankUnivariateSOS.inImagePlusSigmaKerCone_of_h1_data}
+\leanok
+Assume
+\[
+\gcd(u_{0,1},u_{0,2})=1,
+\qquad
+p = g\,q + s\,\sigma(u_0),
+\qquad
+s \text{ is SOS}.
+\]
+Then
+\[
+gq \in \operatorname{im}(A_{g u_0}),
+\qquad
+s\,\sigma(u_0)\in
+\operatorname{cone}\bigl(\sigma(\ker(A_{g u_0}))\bigr),
+\]
+and therefore
+\[
+p \in \operatorname{im}(A_{g u_0}) +
+\operatorname{cone}\bigl(\sigma(\ker(A_{g u_0}))\bigr).
+\]
+This is the formal $h=1$ reduction used later by the abstract SOCP argument.
+\end{proposition}
+
+\section{Factor Peeling}
+
+This definition packages the one-parameter family used in a single peeling
+step.
+\begin{definition}\label{def:peeling-witness}
+\lean{LowRankUnivariateSOS.PeelingStepWitness, LowRankUnivariateSOS.RotatedPeelingData, LowRankUnivariateSOS.HasPeelingWitness, LowRankUnivariateSOS.PeelingPath, LowRankUnivariateSOS.PeelingSchedule}
+\leanok
+A peeling witness is a family $v_\eta$ satisfying
+\[
+A_u(v_\eta)=a_{\mathrm{const}},
+\qquad
+\sigma(v_\eta)=\eta^2 q_{\mathrm{quad}} + 2\eta q + \sigma_{\mathrm{const}},
+\]
+with
+\[
+q_{\mathrm{quad}} \in \operatorname{im}(A_{u_{\mathrm{img,prev}}}).
+\]
+So the quadratic coefficient is already controlled by the previous stage, while
+the linear coefficient is the new target $q$. Lean stores the local step in
+\texttt{PeelingStepWitness} and \texttt{RotatedPeelingData}. The recursive
+transport is stored in
+\[
+\texttt{HasPeelingWitness},\qquad
+\texttt{PeelingPath},\qquad
+\texttt{PeelingSchedule}.
+\]
+\end{definition}
+
+This is the one-factor orthogonality transport.
+\begin{proposition}\label{prop:one-step-peeling}
+\uses{def:peeling-witness,def:h1-machinery}
+\lean{LowRankUnivariateSOS.rotatedPeelingData_of_factor_step, LowRankUnivariateSOS.dot_eq_zero_of_peeling_step, LowRankUnivariateSOS.image_orthogonal_of_peeling_step}
+\leanok
+Assume one quadratic factor step
+\[
+g_{\mathrm{next}}\,r = X^2 g_{\mathrm{start}},
+\qquad
+r \mid \sigma(u_0),
+\qquad
+r \mid g_{\mathrm{start}}.
+\]
+Let
+\[
+q\in \operatorname{im}(A_{g_{\mathrm{next}}u_0}),
+\qquad
+A_{g_{\mathrm{next}}u_0}(b)=q,
+\]
+and define
+\[
+\operatorname{quad}=\operatorname{perpPair}(1,g_{\mathrm{next}}u_0),
+\qquad
+\operatorname{const}=\operatorname{perpPair}(1,b),
+\qquad
+v_\eta=\eta\,\operatorname{quad}+\operatorname{const}.
+\]
+Then
+\[
+A_u(v_\eta)=A_u(\operatorname{const}),
+\]
+and
+\[
+\sigma(v_\eta)=
+\eta^2 \sigma(\operatorname{quad})
+ + 2\eta q
+ + \sigma(\operatorname{const}).
+\]
+Moreover,
+\[
+\sigma(\operatorname{quad})\in \operatorname{im}(A_{g_{\mathrm{start}}u_0}),
+\]
+because $r$ divides both $\sigma(u_0)$ and $g_{\mathrm{start}}$. If the
+previous image is already orthogonal to the residual $r_{\mathrm{res}}$, then
+the SOCP inequality gives
+\[
+0 \le
+\langle \sigma(v_\eta),r_{\mathrm{res}}\rangle
+ + 2\langle A_u(v_\eta),A_u(v_\eta)\rangle
+= 2\eta \langle q,r_{\mathrm{res}}\rangle + C
+\]
+for all real $\eta$. Hence
+\[
+\langle q,r_{\mathrm{res}}\rangle = 0.
+\]
+This is the content of \texttt{dot\_eq\_zero\_of\_peeling\_step}; the theorem
+\texttt{image\_orthogonal\_of\_peeling\_step} upgrades it from one polynomial
+$q$ to the entire next image.
+\end{proposition}
+
+This iterates the one-factor transport along the whole bad factor.
+\begin{proposition}\label{prop:peeling}
+\uses{prop:factor-split,prop:one-step-peeling}
+\lean{LowRankUnivariateSOS.factor_peeling_schedule, LowRankUnivariateSOS.factor_peeling_path, LowRankUnivariateSOS.factor_peeling_image_orthogonal}
+\leanok
+Starting from
+\[
+a = g_{\mathrm{base}} \prod_i r_i,
+\]
+Lean builds a peeling schedule
+\[
+a u_0
+\rightsquigarrow
+(X^2 g_{\mathrm{base}} r_2 \cdots r_n)u_0
+\rightsquigarrow \cdots \rightsquigarrow
+g u_0.
+\]
+Orthogonality propagates at each arrow by Proposition~\ref{prop:one-step-peeling}.
+Therefore the final theorem \texttt{factor\_peeling\_image\_orthogonal} gives
+\[
+\exists g\neq 0,\qquad
+\gcd(g,\sigma(u_0))=1,
+\qquad
+\forall q\in \operatorname{im}(A_{g u_0}),\ \langle q,\sigma(u)-p\rangle = 0.
+\]
+This is the Lean form of the paper's factor-peeling conclusion.
+\end{proposition}
+
+\section{Final Assembly}
+
+This packages exactly the algebraic data needed by Proposition~\ref{prop:abstract-socp}.
+\begin{proposition}\label{prop:setup}
+\uses{prop:reduced-factorization,prop:h1,prop:peeling}
+\lean{LowRankUnivariateSOS.factor_peeling_certificate_step, LowRankUnivariateSOS.rankTwo_factored_h1_setup}
+\leanok
+Start from
+\[
+u=a u_0.
+\]
+If
+\[
+a=0,
+\]
+then the residual vanishes directly from the SOCP inequalities. If
+\[
+a\neq 0,
+\]
+then factor peeling gives
+\[
+\gcd(g,\sigma(u_0))=1,
+\qquad
+\forall q\in \operatorname{im}(A_{g u_0}),\ \langle q,\sigma(u)-p\rangle = 0.
+\]
+Applying Lemma~\ref{lem:hgroup} with $q=\sigma(u_0)$ gives
+\[
+p = g\,q' + s\,\sigma(u_0),
+\qquad
+s \text{ is SOS}.
+\]
+So \texttt{rankTwo\_factored\_h1\_setup} returns exactly the package
+\[
+u=a u_0,\qquad
+p = g\,q' + s\,\sigma(u_0),\qquad
+\gcd(g,\sigma(u_0))=1,
+\qquad
+\langle \operatorname{im}(A_{g u_0}),\sigma(u)-p\rangle = 0.
+\]
+\end{proposition}
+
+\section{How the Proof Concludes}
+
+This is the final substitution into the abstract SOCP inequality.
+
+From Proposition~\ref{prop:setup} and Proposition~\ref{prop:h1}, the polynomial
+$p$ has the form
+\[
+p = q_{\mathrm{img}} + \sum_i \sigma(w_i),
+\qquad
+q_{\mathrm{img}} \in \operatorname{im}(A_{g u_0}),
+\qquad
+w_i \in \ker(A_{a u_0}).
+\]
+So Proposition~\ref{prop:abstract-socp} applies and gives
+\[
+\sigma(u)-p=0.
+\]
+The theorem \texttt{rankTwo\_no\_spurious\_socp} is therefore the short chain
+\[
+\text{reduced factorization}
+\Longrightarrow
+\text{factor peeling}
+\Longrightarrow
+\text{hgroup} + h=1
+\Longrightarrow
+\text{image-plus-cone}
+\Longrightarrow
+\sigma(u)-p=0.
+\]

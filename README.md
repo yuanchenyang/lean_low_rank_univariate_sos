@@ -20,10 +20,23 @@ The formal theorem is slightly stronger than the paper statement: it is proved
 for any positive-definite bilinear form `B : DotForm` on the polynomial space,
 not just for a specific coefficient inner product.
 
+The Lean statement also suppresses the paper's explicit degree bookkeeping. In
+the paper, the optimization problem is posed on degree-`d` factors `u` for a
+degree-`2d` target polynomial `p`, and the SOCP conditions are tested only
+against degree-`d` perturbations. In this formalization, `Poly` is the full
+polynomial ring and `IsSOCP` quantifies over all polynomial directions. This is
+meant as a stronger abstract SOCP hypothesis, not as a change to the intended
+optimization problem: the practical search space in the paper is still the
+fixed-degree one, and the no-spurious-SOCP conclusion is intended for that
+finite-dimensional problem.
+
+## Acknowledgements
+
+This formalization was developed with the help of GPT-5.4.
+
 ## Build
 
 ```bash
-cd low_rank_univariate_sos
 lake build
 ```
 

@@ -6,9 +6,13 @@
 usemathjax: true
 ---
 
+This project formalizes in Lean 4 a low-rank sum-of-squares result for
+univariate polynomials. Its main theorem shows that for the rank-2
+quadratic-penalty objective, every second-order critical point is globally
+optimal.
+
 Useful links:
 
-* [Zulip chat for Lean](https://leanprover.zulipchat.com/) for coordination
 * [Blueprint]({{ site.url }}/blueprint/)
 * [Blueprint as pdf]({{ site.url }}/blueprint.pdf)
 * [Dependency graph]({{ site.url }}/blueprint/dep_graph_document.html)

@@ -1,1 +1,25 @@
+*.olean
+/_target
 /.lake
+/doc-gen
+/build
+web/
+lean_decls
+print/
+*/.DS_Store
+.vscode/
+
+# Auxiliary latex files
+*.aux
+*.bbl
+*.log
+*.fdb_latexmk
+*.out
+*.fls
+*.blg
+*.paux
+*.pdf
+*.pygstyle
+*.pygtex
+*.synctex(busy)
+*.synctex.gz

@@ -1,4 +1,4 @@
-name = "low_rank_univariate_sos"
+name = "LowRankUnivariateSOS"
 version = "0.1.0"
 keywords = ["math"]
 defaultTargets = ["LowRankUnivariateSOS"]
@@ -10,12 +10,6 @@ weak.linter.mathlibStandardSet = true
 maxSynthPendingDepth = 3
 
 [[require]]
-name = "mathlib"
-scope = "leanprover-community"
-rev = "v4.29.0"
-
-
-[[require]]
 name = "checkdecls"
 git = "https://github.com/PatrickMassot/checkdecls.git"
 
@@ -23,5 +17,11 @@ git = "https://github.com/PatrickMassot/checkdecls.git"
 name = "«doc-gen4»"
 git = "https://github.com/leanprover/doc-gen4"
 rev = "main"
+
+[[require]]
+name = "mathlib"
+scope = "leanprover-community"
+rev = "v4.29.0"
+
 [[lean_lib]]
 name = "LowRankUnivariateSOS"
