@@ -24,31 +24,9 @@ jobs:
     runs-on: ubuntu-latest
     name: Build project
     steps:
-      - name: Cleanup to free disk space
-        uses: jlumbroso/free-disk-space@54081f138730dfa15788a46383842cd2f914a1be # v1.3.0
-        with:
-          tool-cache: false
-          android: true
-          dotnet: false
-          haskell: false
-          large-packages: false
-          docker-images: false
-          swap-storage: false
-
-      - name: Checkout project
-        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
-        with:
-          fetch-depth: 0 # Fetch all history for all branches and tags
-
-      - name: Build and lint project
-        uses: leanprover/lean-action@434f25c2f80ded67bba02502ad3a86f25db50709 # 2025-07-02
-        with:
-          build: true
-          lint: true
-          mk_all-check: true
-
-      - name: Compile blueprint and documentation
-        uses: leanprover-community/docgen-action@deed0cdc44dd8e5de07a300773eb751d33e32fc8 # 2025-10-26
+      - uses: actions/checkout@v5
+      - uses: leanprover/lean-action@v1
+      - uses: leanprover-community/docgen-action@v1
         with:
           blueprint: true
           homepage: home_page
