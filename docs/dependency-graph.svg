@@ -1,0 +1,191 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1900" height="1080" viewBox="0 0 1900 1080" role="img" aria-labelledby="title desc">
+  <title id="title">Depandency graph</title>
+  <desc id="desc">Static dependency graph showing the main theorem, its bridge lemmas, and the core algebraic ingredients used in the Lean proof.</desc>
+  <defs>
+    <style>
+      .bg { fill: #f8fafc; }
+      .title { font: 700 28px sans-serif; fill: #0f172a; }
+      .subtitle { font: 16px sans-serif; fill: #475569; }
+      .edge { stroke: #64748b; stroke-width: 2.5; fill: none; stroke-linecap: round; stroke-linejoin: round; marker-end: url(#arrow); }
+      .node { stroke-width: 2.5; rx: 18; ry: 18; }
+      .top { fill: #dbeafe; stroke: #2563eb; }
+      .bridge { fill: #ffedd5; stroke: #ea580c; }
+      .algebra { fill: #dcfce7; stroke: #16a34a; }
+      .core { fill: #f3e8ff; stroke: #9333ea; }
+      .aux { fill: #e2e8f0; stroke: #475569; }
+      .nodeTitle { font: 700 18px sans-serif; fill: #0f172a; text-anchor: middle; }
+      .nodeFile { font: 14px sans-serif; fill: #475569; text-anchor: middle; }
+      .legendText { font: 14px sans-serif; fill: #334155; }
+    </style>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="7.2" refY="4" orient="auto" markerUnits="strokeWidth">
+      <path d="M 0 0 L 8 4 L 0 8 z" fill="#64748b"/>
+    </marker>
+  </defs>
+
+  <rect class="bg" x="0" y="0" width="1900" height="1080"/>
+
+  <text class="title" x="80" y="40">Depandency graph</text>
+  <text class="subtitle" x="80" y="68">Arrows indicate immediate proof dependencies. Read the graph from the bottom up.</text>
+
+  <g transform="translate(1480,22)">
+    <rect class="node top" x="0" y="0" width="24" height="18"/>
+    <text class="legendText" x="34" y="14">Top-level theorem</text>
+    <rect class="node bridge" x="0" y="30" width="24" height="18"/>
+    <text class="legendText" x="34" y="44">Bridge / certificate step</text>
+    <rect class="node algebra" x="0" y="60" width="24" height="18"/>
+    <text class="legendText" x="34" y="74">Algebra / SOS input</text>
+    <rect class="node core" x="0" y="90" width="24" height="18"/>
+    <text class="legendText" x="34" y="104">Normalization / core factorization</text>
+  </g>
+
+  <path class="edge" d="M 950 98 V 124 H 400 V 150"/>
+  <path class="edge" d="M 950 98 V 124 H 1340 V 150"/>
+
+  <path class="edge" d="M 400 224 V 262 H 170 V 300"/>
+  <path class="edge" d="M 400 224 V 262 H 490 V 300"/>
+  <path class="edge" d="M 400 224 V 262 H 820 V 300"/>
+  <path class="edge" d="M 400 224 V 262 H 490 V 430"/>
+
+  <path class="edge" d="M 1340 224 V 262 H 1190 V 300"/>
+  <path class="edge" d="M 1340 224 V 262 H 1595 V 300"/>
+
+  <path class="edge" d="M 820 374 V 430"/>
+  <path class="edge" d="M 820 504 V 560"/>
+  <path class="edge" d="M 820 634 V 690"/>
+  <path class="edge" d="M 820 764 V 792 H 560 V 820"/>
+  <path class="edge" d="M 820 764 V 792 H 940 V 820"/>
+  <path class="edge" d="M 560 894 V 922 H 340 V 950"/>
+  <path class="edge" d="M 560 894 V 922 H 680 V 950"/>
+  <path class="edge" d="M 940 894 V 922 H 1020 V 950"/>
+
+  <path class="edge" d="M 1595 374 V 430"/>
+  <path class="edge" d="M 1595 504 V 532 H 1395 V 560"/>
+  <path class="edge" d="M 1595 504 V 532 H 1710 V 560"/>
+  <path class="edge" d="M 1395 634 V 690"/>
+
+  <g transform="translate(740,24)">
+    <rect class="node top" x="0" y="0" width="420" height="74"/>
+    <text class="nodeTitle" x="210" y="29">rankTwo_no_spurious_socp</text>
+    <text class="nodeFile" x="210" y="52">RankTwoMain.lean</text>
+  </g>
+
+  <g transform="translate(220,150)">
+    <rect class="node top" x="0" y="0" width="360" height="74"/>
+    <text class="nodeTitle" x="180" y="29">rankTwo_factored_h1_setup</text>
+    <text class="nodeFile" x="180" y="52">RankTwoMain.lean</text>
+  </g>
+
+  <g transform="translate(1160,150)">
+    <rect class="node bridge" x="0" y="0" width="360" height="74"/>
+    <text class="nodeTitle" x="180" y="29">factored_h1_residual_eq_zero</text>
+    <text class="nodeFile" x="180" y="52">FactoredCase.lean</text>
+  </g>
+
+  <g transform="translate(20,300)">
+    <rect class="node core" x="0" y="0" width="300" height="74"/>
+    <text class="nodeTitle" x="150" y="29">gcd_sigma_decomposition</text>
+    <text class="nodeFile" x="150" y="52">UnivariateAlgebraCore.lean</text>
+  </g>
+
+  <g transform="translate(340,300)">
+    <rect class="node bridge" x="0" y="0" width="300" height="74"/>
+    <text class="nodeTitle" x="150" y="29">residual_eq_zero_of_zero_socp</text>
+    <text class="nodeFile" x="150" y="52">RankTwoMain.lean</text>
+  </g>
+
+  <g transform="translate(660,300)">
+    <rect class="node bridge" x="0" y="0" width="320" height="74"/>
+    <text class="nodeTitle" x="160" y="29">factor_peeling_certificate_step</text>
+    <text class="nodeFile" x="160" y="52">RankTwoMain.lean</text>
+  </g>
+
+  <g transform="translate(340,430)">
+    <rect class="node algebra" x="0" y="0" width="300" height="74"/>
+    <text class="nodeTitle" x="150" y="29">hgroup_affine</text>
+    <text class="nodeFile" x="150" y="52">UnivariateSOS.lean</text>
+  </g>
+
+  <g transform="translate(660,430)">
+    <rect class="node bridge" x="0" y="0" width="320" height="74"/>
+    <text class="nodeTitle" x="160" y="29">factor_peeling_image_orthogonal</text>
+    <text class="nodeFile" x="160" y="52">UnivariateAlgebra.lean</text>
+  </g>
+
+  <g transform="translate(660,560)">
+    <rect class="node bridge" x="0" y="0" width="320" height="74"/>
+    <text class="nodeTitle" x="160" y="29">factor_peeling_path</text>
+    <text class="nodeFile" x="160" y="52">UnivariateAlgebra.lean</text>
+  </g>
+
+  <g transform="translate(660,690)">
+    <rect class="node bridge" x="0" y="0" width="320" height="74"/>
+    <text class="nodeTitle" x="160" y="29">factor_peeling_schedule</text>
+    <text class="nodeFile" x="160" y="52">UnivariateAlgebra.lean</text>
+  </g>
+
+  <g transform="translate(400,820)">
+    <rect class="node algebra" x="0" y="0" width="320" height="74"/>
+    <text class="nodeTitle" x="160" y="29">factor_peeling_decomposition</text>
+    <text class="nodeFile" x="160" y="52">UnivariateAlgebra.lean</text>
+  </g>
+
+  <g transform="translate(780,820)">
+    <rect class="node bridge" x="0" y="0" width="320" height="74"/>
+    <text class="nodeTitle" x="160" y="29">factor_peeling_one_step</text>
+    <text class="nodeFile" x="160" y="52">UnivariateAlgebra.lean</text>
+  </g>
+
+  <g transform="translate(180,950)">
+    <rect class="node core" x="0" y="0" width="320" height="74"/>
+    <text class="nodeTitle" x="160" y="29">gcd_sigma_decomposition</text>
+    <text class="nodeFile" x="160" y="52">UnivariateAlgebraCore.lean</text>
+  </g>
+
+  <g transform="translate(520,950)">
+    <rect class="node core" x="0" y="0" width="320" height="74"/>
+    <text class="nodeTitle" x="160" y="29">no_real_roots_sigma_reduced</text>
+    <text class="nodeFile" x="160" y="52">UnivariateAlgebraCore.lean</text>
+  </g>
+
+  <g transform="translate(860,950)">
+    <rect class="node algebra" x="0" y="0" width="320" height="74"/>
+    <text class="nodeTitle" x="160" y="29">hasPeelingWitness_of_factor_step</text>
+    <text class="nodeFile" x="160" y="52">PeelingStep.lean</text>
+  </g>
+
+  <g transform="translate(1040,300)">
+    <rect class="node bridge" x="0" y="0" width="300" height="74"/>
+    <text class="nodeTitle" x="150" y="29">transformed_image_plus_cone</text>
+    <text class="nodeFile" x="150" y="52">FactoredCase.lean</text>
+  </g>
+
+  <g transform="translate(1420,300)">
+    <rect class="node bridge" x="0" y="0" width="350" height="74"/>
+    <text class="nodeTitle" x="175" y="29">factored_h1_decomposition_to_original</text>
+    <text class="nodeFile" x="175" y="52">FactoredCase.lean</text>
+  </g>
+
+  <g transform="translate(1420,430)">
+    <rect class="node bridge" x="0" y="0" width="350" height="74"/>
+    <text class="nodeTitle" x="175" y="29">inImagePlusSigmaKerCone_of_h1_data</text>
+    <text class="nodeFile" x="175" y="52">H1Case.lean</text>
+  </g>
+
+  <g transform="translate(1230,560)">
+    <rect class="node algebra" x="0" y="0" width="330" height="74"/>
+    <text class="nodeTitle" x="165" y="29">inImageA_mul_of_isCoprime</text>
+    <text class="nodeFile" x="165" y="52">H1Case.lean</text>
+  </g>
+
+  <g transform="translate(1580,560)">
+    <rect class="node algebra" x="0" y="0" width="260" height="74"/>
+    <text class="nodeTitle" x="130" y="29">inSigmaKerCone</text>
+    <text class="nodeFile" x="130" y="52">H1Case.lean</text>
+  </g>
+
+  <g transform="translate(1230,690)">
+    <rect class="node algebra" x="0" y="0" width="330" height="74"/>
+    <text class="nodeTitle" x="165" y="29">Bezout / coprime surjectivity</text>
+    <text class="nodeFile" x="165" y="52">H1Case.lean</text>
+  </g>
+</svg>
