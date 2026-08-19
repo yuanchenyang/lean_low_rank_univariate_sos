@@ -9,8 +9,8 @@ lean4export_dir="$cache_root/lean4export"
 nanoda_dir="$cache_root/nanoda"
 
 comparator_commit=68a064109f01c08f47c8edc9f51d6a2bbffaa188
-# lean4export tag v4.29.0, whose lean-toolchain matches this project.
-lean4export_commit=5a53b634f6a3e21e55b4852337c4fcf0781ad1aa
+# lean4export tag v4.30.0, whose lean-toolchain matches this project.
+lean4export_commit=a3e35a584f59b390667db7269cd37fca8575e4bf
 landrun_commit=811cfff51ceaf3d9843708aa6d22e9b84ccac8b4
 nanoda_commit=68d5ca9db226849b41a6fff59d796ff19d0a8840
 

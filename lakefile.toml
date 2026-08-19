@@ -7,6 +7,8 @@ defaultTargets = ["LowRankUnivariateSOS"]
 pp.unicode.fun = true # pretty-prints `fun a ↦ b`
 relaxedAutoImplicit = false
 weak.linter.mathlibStandardSet = true
+# Mathlib's copyright-header linter does not apply to this project.
+weak.linter.style.header = false
 maxSynthPendingDepth = 3
 
 [[require]]
@@ -16,7 +18,7 @@ git = "https://github.com/PatrickMassot/checkdecls.git"
 [[require]]
 name = "mathlib"
 scope = "leanprover-community"
-rev = "v4.29.0"
+rev = "v4.30.0"
 
 [[lean_lib]]
 name = "LowRankUnivariateSOS"

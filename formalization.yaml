@@ -145,7 +145,7 @@ review:
   notes: >-
     The formalizer is a coauthor of the source paper and checked the formal
     definitions and the advertised statement against the paper. All proofs
-    compile with Lean 4.29.0 / Mathlib v4.29.0 with no sorry; the advertised
+    compile with Lean 4.30.0 / Mathlib v4.30.0 with no sorry; the advertised
     theorem depends only on propext, Classical.choice and Quot.sound. No
     independent external review has been performed.
 
