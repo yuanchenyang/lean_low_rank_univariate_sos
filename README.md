@@ -14,7 +14,17 @@ Optimization*, 33(3), 2023
 > Burer-Monteiro objective has zero residual, hence is globally optimal.
 
 In Lean, the top-level statement is
-[`rankTwo_no_spurious_socp`](LowRankUnivariateSOS/RankTwoMain.lean#L116).
+[`rankTwo_no_spurious_socp`](LowRankUnivariateSOS/RankTwoMain.lean#L116),
+which concludes `σ(u) = p` (equivalently `f_p(u) = 0`, by
+`objective_eq_zero_iff_residual_eq_zero`). It is advertised in the statement
+file [`Challenge.lean`](Challenge.lean) (see
+[Palomar submission](#palomar-submission) below).
+
+Only the rank `r = 2` case of the paper's Theorem 1.1 is formalized; this is the
+case treated by the paper's proof. The hypothesis "`p` is nonnegative" is taken
+in the form `IsSOS p`, i.e. `p` is a sum of two squares; for real univariate
+polynomials the two are classically equivalent, but that equivalence is not
+part of this development.
 
 The formal theorem is slightly stronger than the paper statement: it is proved
 for any positive-definite bilinear form `B : DotForm` on the polynomial space,
@@ -32,7 +42,43 @@ finite-dimensional problem.
 
 ## Acknowledgements
 
-This formalization was developed with the help of GPT-5.4.
+This formalization was developed with the help of GPT-5.4. The Palomar
+submission files were prepared with the help of Claude (Anthropic) and reviewed
+by the author. The repository is licensed under the Apache License 2.0 (see
+[`LICENSE`](LICENSE)); the paper and the Lean dependencies retain their own
+licenses.
+
+## Palomar Submission
+
+This repository is laid out for submission to the
+[Palomar registry](https://palomar-registry.org/):
+
+- [`Challenge.lean`](Challenge.lean) is the small statement surface a reader
+  audits. It restates, verbatim and with docstrings in the paper's notation,
+  the definitions `Poly`, `UPair`, `sigma2` (`σ`), `A` (`A_u`), `residual`,
+  `IsSOS`, `DotForm`, `objective` (`f_p`), `IsFOCP`, `hessianTerm` and
+  `IsSOCP` from `PolynomialModel.lean` and `Socp.lean`, and states the
+  advertised theorem with `sorry`.
+- [`Solution.lean`](Solution.lean) imports the proof development, which proves
+  the same declaration, and restates it as an `example`.
+- [`comparator.json`](comparator.json) names the compared theorem
+  `LowRankUnivariateSOS.rankTwo_no_spurious_socp`. Comparator checks that its
+  statement (and every definition it uses) agrees exactly between
+  `Challenge.lean` and `Solution.lean`, and that the proof uses only
+  `propext`, `Classical.choice` and `Quot.sound`.
+- [`formalization.yaml`](formalization.yaml) records the public description,
+  provenance, classification, scope, known divergences from the paper,
+  automation and review information.
+- [`scripts/verify-comparator.sh`](scripts/verify-comparator.sh) runs the
+  pinned Comparator, lean4export, NanoDa and Landrun revisions locally (Linux
+  with Git, Go, Rust/Cargo and Python 3 required); CI runs it in
+  [`.github/workflows/palomar.yml`](.github/workflows/palomar.yml).
+
+Because `Challenge.lean` must not import the library, the statement-level
+definitions are duplicated there. `PolynomialModel.lean` has the same import
+list as `Challenge.lean` so that both copies elaborate to identical terms; when
+editing one copy, edit the other. Submissions go to
+<https://submit.palomar-registry.org/> with the full 40-character commit SHA.
 
 ## Build
 

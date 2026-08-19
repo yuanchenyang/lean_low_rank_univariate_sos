@@ -2,6 +2,16 @@ import Mathlib.LinearAlgebra.BilinearForm.Properties
 import Mathlib.LinearAlgebra.QuadraticForm.Basic
 import LowRankUnivariateSOS.PolynomialModel
 
+/-!
+# The quadratic-penalty objective and its critical points
+
+This file defines the objective `f_p(u) = ‖σ(u) - p‖²` from equation (1.3) of
+the paper together with the first- and second-order critical point conditions
+of Definition 3.1. The definitions `DotForm`, `objective`, `IsFOCP`,
+`hessianTerm` and `IsSOCP` are duplicated verbatim in the root module
+`Challenge.lean` (the Palomar statement surface); keep the two copies in sync.
+-/
+
 noncomputable section
 
 namespace LowRankUnivariateSOS

@@ -2,6 +2,20 @@ import Mathlib.Algebra.Polynomial.FieldDivision
 import Mathlib.Data.Real.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Algebra.BigOperators.Ring.Finset
+import Mathlib.LinearAlgebra.BilinearForm.Properties
+import Mathlib.LinearAlgebra.QuadraticForm.Basic
+
+/-!
+# The rank-2 polynomial model
+
+This file and `Socp.lean` define the formal model behind the main theorem. The
+statement-level definitions below (`Poly`, `UPair`, `sigma2`, `A`, `residual`,
+`IsSOS`) are duplicated verbatim in the root module `Challenge.lean`, which is
+the statement surface audited by the Palomar registry. Palomar's Comparator
+requires the two copies to elaborate to identical terms, so the import list of
+this file must stay equal to the import list of `Challenge.lean`, and the
+duplicated definitions must not be edited in one place without the other.
+-/
 
 noncomputable section
 
@@ -14,8 +28,9 @@ abbrev Poly := Polynomial ℝ
 instance : GCDMonoid Poly := EuclideanDomain.gcdMonoid Poly
 
 /-- `UPair` is the rank-2 factor variable `\vec u = (u₁,u₂)` from the paper.
- We work throughout with pairs because the no-spurious-SOCP theorem is proved by
- reducing the general rank-`r` statement to the case `r = 2`. -/
+ We work throughout with pairs because the paper's proof of the no-spurious-SOCP
+ theorem treats the case `r = 2`, the Pythagoras number of univariate
+ polynomials; this development formalizes exactly that case. -/
 structure UPair where
   fst : Poly
   snd : Poly

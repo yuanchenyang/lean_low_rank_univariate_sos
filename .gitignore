@@ -1,6 +1,7 @@
 *.olean
 /_target
 /.lake
+/.cache/
 /doc-gen
 /build
 web/

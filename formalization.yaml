@@ -1,0 +1,209 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/mathlib-initiative/formalization.yaml/main/schema/formalization.schema.json
+# formalization.yaml v0.4 metadata for the Palomar submission of
+# LowRankUnivariateSOS. See README.md for the narrative account and
+# Challenge.lean for the advertised statement.
+version: "v0.4"
+
+project:
+  name: "Low-rank univariate sum of squares has no spurious second-order critical points (rank 2)"
+  description: >-
+    A Lean 4 formalization of the rank-2 case of the main theorem of Legat,
+    Yuan and Parrilo, "Low-Rank Univariate Sum of Squares Has No Spurious Local
+    Minima" (SIAM J. Optim. 33(3), 2023). For a real univariate polynomial p and
+    a pair of polynomials u = (u₁, u₂), consider the quadratically penalized
+    Burer–Monteiro objective f_p(u) = ‖σ(u) - p‖² with σ(u) = u₁² + u₂², the
+    norm coming from any inner product on ℝ[x]. The formalized theorem states
+    that if p is a sum of two squares and u is a second-order critical point of
+    f_p (vanishing gradient and positive semidefinite Hessian, Definition 3.1 of
+    the paper), then σ(u) = p, equivalently f_p(u) = 0; hence every SOCP, and in
+    particular every local minimum, is a global minimum. The development follows
+    the paper's proof: the gcd decomposition u = a·u₀ with u₀ coprime, the
+    observation that σ(u₀) has no real roots, a Bézout-based "hgroup" lemma
+    writing a sum of squares p as g·q + s·σ(u₀) with s a sum of squares when g
+    and σ(u₀) are coprime, the factor-peeling argument that replaces the
+    quadratic factors of a shared with σ(u₀) by X², and the final certificate
+    argument combining the first- and second-order conditions.
+  # Required nonempty list of name strings.
+  authors:
+    - "Chenyang Yuan"
+  # Root licence; keep in sync with the Apache-2.0 LICENSE file.
+  license: "Apache-2.0"
+  # People responsible for this formalization.
+  responsible_maintainers:
+    - "Chenyang Yuan"
+
+# `repository` is omitted: this repository contains the substantive proof
+# development (Palomar records the default `substantive-development`).
+
+classification:
+  arxiv: ["math.OC", "math.AG"]
+  msc2020: ["90C23", "90C26", "90C22", "12D15"]
+
+sources:
+  - title: "Low-Rank Univariate Sum of Squares Has No Spurious Local Minima"
+    authors:
+      - "Benoît Legat"
+      - "Chenyang Yuan"
+      - "Pablo A. Parrilo"
+    id: "doi:10.1137/22M1516208"
+    type: "paper"
+    location: "SIAM Journal on Optimization 33(3), 2023, pp. 2041–2061; arXiv:2205.11466"
+    relationship: "formalizes"
+    note: >-
+      The formalization covers the rank r = 2 case of Theorem 1.1, which is the
+      case proved in Sections 3–4 of the paper, with the nonnegativity of p
+      taken in the form "p is a sum of two squares" and with the critical-point
+      conditions imposed on the full polynomial ring rather than on polynomials
+      of bounded degree (see status.scope and fidelity.divergences).
+    author_endorsement: "participated"
+
+related_formalizations: []
+
+status:
+  scope: >-
+    Formalized: the rank-2 case of Theorem 1.1 for an arbitrary positive-definite
+    real bilinear form on ℝ[x] (the paper's statement is for an arbitrary inner
+    product; the proof never uses a specific one). The target polynomial p is
+    assumed to be a sum of two squares (IsSOS p), which for real univariate
+    polynomials is classically equivalent to nonnegativity on ℝ, but that
+    equivalence is not part of this development. The pair u = (u₁, u₂) ranges
+    over the full polynomial ring and the first- and second-order conditions are
+    required for every polynomial direction v (a stronger criticality hypothesis
+    than the paper's fixed-degree one, so the fixed-degree conclusion follows
+    only for a critical point that remains critical for all directions; no
+    degree bookkeeping is formalized). Not formalized: the extension to rank
+    r > 2 stated in Theorem 1.1, the certificate identity (5.3) of Section 5,
+    the extensions of Section 6 (projection onto the SOS cone, nonnegativity on
+    intervals, linear constraints), and the FFT-based computations of Section 7.
+  # Counts refer to the proof development, excluding Challenge.lean's
+  # deliberate sorry holes.
+  sorry_count: 0
+  sorry_in_definitions: 0
+  axioms: []
+  main_results:
+    - "LowRankUnivariateSOS.rankTwo_no_spurious_socp"
+
+automation:
+  methods:
+    - method: "agent"
+      models: ["GPT-5.4"]
+      framework: "OpenAI Codex"
+      tool_setup: >-
+        AI-assisted: the Lean proof development was written with the help of
+        GPT-5.4 used as a coding agent, directed and reviewed by the human
+        author, with Lean/Mathlib as the checker at every step.
+      cost:
+        wall_time: "not tracked"
+        spend_usd: "subscription-based"
+        hardware: "local machine"
+      prompting_notes: "n/a"
+    - method: "manual"
+      models: []
+      framework: "n/a"
+      tool_setup: >-
+        Human authoring and review of the statements, the module structure, the
+        blueprint and README, and the Palomar statement surface.
+      cost:
+        wall_time: "not tracked"
+        spend_usd: "not tracked"
+        hardware: "local machine"
+      prompting_notes: "n/a"
+  spend_usd: "not tracked"
+  notes: >-
+    The formal statements (PolynomialModel.lean, Socp.lean, Challenge.lean) were
+    written and checked by hand against Definition 3.1 and equations (1.3),
+    (3.3), (3.4) of the paper by the formalizer, who is also an author of the
+    paper. The proofs were developed with the help of GPT-5.4 acting as a
+    coding agent and were accepted only when they compiled against the pinned
+    Mathlib with no sorry and no additional axioms. The Palomar submission
+    files (Challenge.lean, Solution.lean, comparator.json, formalization.yaml)
+    were prepared with the help of Claude (Anthropic) and reviewed by the
+    formalizer.
+
+fidelity:
+  divergences: >-
+    (1) Rank: only r = 2 is formalized; Theorem 1.1 is stated for all r ≥ 2.
+    (2) Hypothesis on p: "p is nonnegative on ℝ" is replaced by "p is a sum of
+    two squares" (IsSOS p); the two are classically equivalent for real
+    univariate polynomials but the equivalence is not formalized. (3) Degrees:
+    the paper fixes deg p ≤ 2d and optimizes over pairs of polynomials of
+    degree at most d, testing criticality against degree-d directions; the
+    formalization works in the full polynomial ring and requires the first- and
+    second-order conditions for all polynomial directions v. This is a stronger
+    SOCP hypothesis, not a change to the optimization problem. (4) Inner
+    product: the formalization is stated for an arbitrary positive-definite
+    bilinear form B (Fact B.toQuadraticMap.PosDef) on ℝ[x], which includes
+    every inner product of the paper. (5) Conclusion: the formal theorem
+    concludes σ(u) = p, which is equivalent to the paper's f_p(u) = 0 for a
+    positive-definite B (objective_eq_zero_iff_residual_eq_zero in Socp.lean).
+
+review:
+  status: "author-verified"
+  reviewers:
+    - "Chenyang Yuan"
+  notes: >-
+    The formalizer is a coauthor of the source paper and checked the formal
+    definitions and the advertised statement against the paper. All proofs
+    compile with Lean 4.29.0 / Mathlib v4.29.0 with no sorry; the advertised
+    theorem depends only on propext, Classical.choice and Quot.sound. No
+    independent external review has been performed.
+
+alignment:
+  namespace: "LowRankUnivariateSOS"
+  statements:
+    - source: "Theorem 1.1 (rank r = 2), conclusion f_p(u) = 0 in the form σ(u) = p"
+      lean: "LowRankUnivariateSOS.rankTwo_no_spurious_socp"
+      module: "LowRankUnivariateSOS.RankTwoMain"
+      status: "proved"
+      note: >-
+        Hypotheses: IsSOS p (p is a sum of two squares) and IsSOCP B p u
+        (Definition 3.1 with respect to a positive-definite bilinear form B).
+        Conclusion: sigma2 u = p, i.e. u₁² + u₂² = p, equivalently
+        f_p(u) = 0 (objective_eq_zero_iff_residual_eq_zero).
+    - source: "Definition 3.1 and equations (3.3), (3.4): first- and second-order critical points"
+      lean: "LowRankUnivariateSOS.IsSOCP"
+      module: "LowRankUnivariateSOS.Socp"
+      status: "adapted"
+      note: >-
+        IsFOCP requires ⟨A_u(v), σ(u) - p⟩ = 0 and IsSOCP additionally requires
+        ⟨σ(v), σ(u) - p⟩ + 2‖A_u(v)‖² ≥ 0, for every pair of polynomials v
+        (all degrees), with respect to the bilinear form B.
+    - source: "Proposition 3.4 / Proposition 3.6: decomposition u = a·u₀ with u₀ coprime and σ(u₀) without real roots"
+      lean: "LowRankUnivariateSOS.gcd_sigma_decomposition"
+      module: "LowRankUnivariateSOS.UnivariateAlgebraCore"
+      status: "proved"
+      note: >-
+        The common factor a of u₁, u₂ plays the role of ĝ = g h; the split of a
+        into the part coprime to σ(u₀) and the peelable part is done in
+        factor_peeling_decomposition. no_real_roots_sigma_reduced is
+        Proposition 3.6.
+    - source: "Lemma 3.9 (affine hgroup lemma)"
+      lean: "LowRankUnivariateSOS.hgroup_affine"
+      module: "LowRankUnivariateSOS.UnivariateSOS"
+      status: "adapted"
+      note: >-
+        For sums of two squares p, q and g coprime to q, produces p = g·t + s·q
+        with s a sum of two squares, by a direct Bézout construction
+        (s = b²·p·q where a·g + b·q = 1) instead of the Hermite-interpolation
+        argument of Proposition 3.8; no degree bounds are tracked.
+    - source: "Proposition 4.4 and its proof (condition (C3), factor peeling)"
+      lean: "LowRankUnivariateSOS.factor_peeling_image_orthogonal"
+      module: "LowRankUnivariateSOS.UnivariateAlgebra"
+      status: "proved"
+      note: >-
+        Produces g coprime to σ(u₀) with ⟨q, σ(u) - p⟩ = 0 for all q in the
+        image of A_{g·u₀}, by iterating the one-factor orthogonality transport
+        (equations (4.5)–(4.10)) formalized in PeelingStep.lean.
+    - source: "Proof of Proposition 4.2 (certificate argument for condition (C2)/(C3))"
+      lean: "LowRankUnivariateSOS.factored_h1_residual_eq_zero"
+      module: "LowRankUnivariateSOS.FactoredCase"
+      status: "proved"
+      note: >-
+        From the image-plus-cone decomposition of p, the first- and second-order
+        conditions force ⟨p, σ(u) - p⟩ ≥ 0 and hence ‖σ(u) - p‖² ≤ 0.
+
+acknowledgements: >-
+  Mathlib and the Lean 4 community; Lake; the leanblueprint and doc-gen4 tools;
+  GPT-5.4 (OpenAI), which assisted with the Lean proofs; Claude (Anthropic),
+  which assisted with the Palomar submission files; and Benoît Legat and
+  Pablo A. Parrilo, coauthors of the source paper.

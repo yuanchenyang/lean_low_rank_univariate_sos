@@ -3,6 +3,9 @@
 ## Project Structure & Module Organization
 `LowRankUnivariateSOS.lean` is the library entry point. Core proof files live in [`LowRankUnivariateSOS/`](./LowRankUnivariateSOS): `PolynomialModel.lean` and `Socp.lean` define the formal model, `UnivariateAlgebraCore.lean`, `UnivariateSOS.lean`, and `UnivariateAlgebra.lean` build the algebraic reductions, and `RankTwoMain.lean` contains the main theorem. Keep new lemmas near the stage of the proof they support instead of growing `RankTwoMain.lean`. Repository docs live in `README.md` and `docs/` (for example `docs/dependency-graph.svg`).
 
+## Palomar Submission Files
+`Challenge.lean` (statement surface, `sorry` proofs), `Solution.lean` (imports the library), `comparator.json`, `formalization.yaml`, and `LICENSE` at the repository root are the [Palomar](https://palomar-registry.org/) submission layout. `Challenge.lean` may import only Mathlib, so it duplicates the statement-level definitions of `PolynomialModel.lean` and `Socp.lean` verbatim; keep the two copies and the import list of `PolynomialModel.lean` in sync, and keep `comparator.json` listing every advertised theorem. `scripts/verify-comparator.sh` runs the pinned Comparator locally.
+
 ## Build, Test, and Development Commands
 Use Lake from the repository root:
 
