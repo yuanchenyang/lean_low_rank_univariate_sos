@@ -7,13 +7,14 @@ version: "v0.4"
 project:
   name: "Low-rank univariate sum of squares has no spurious second-order critical points (rank 2)"
   description: >-
-    A Lean 4 formalization of the rank-2 case of the main theorem of Legat,
+    A Lean 4 formalization of the main theorem of Legat,
     Yuan and Parrilo, "Low-Rank Univariate Sum of Squares Has No Spurious Local
     Minima" (SIAM J. Optim. 33(3), 2023). For a real univariate polynomial p and
     a pair of polynomials u = (u₁, u₂), consider the quadratically penalized
     Burer–Monteiro objective f_p(u) = ‖σ(u) - p‖² with σ(u) = u₁² + u₂², the
     norm coming from any inner product on ℝ[x]. The formalized theorem states
-    that if p is a sum of two squares and u is a second-order critical point of
+    that if p is a sum of two squares (which is the case for any nonnegative 
+    univariate polynomial) and u is a second-order critical point of
     f_p (vanishing gradient and positive semidefinite Hessian, Definition 3.1 of
     the paper), then σ(u) = p, equivalently f_p(u) = 0; hence every SOCP, and in
     particular every local minimum, is a global minimum. The development follows
